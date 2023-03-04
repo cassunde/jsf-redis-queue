@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Map;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.redisson.Redisson;
 import org.redisson.api.RStream;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.StreamMessageId;
@@ -19,11 +19,13 @@ public class Redis implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
+	
+	@Inject
+	private RedissonClient redisson;
 
 	
 	public void pushStream(String message, String usuario) throws InterruptedException {
 		
-		RedissonClient redisson = Redisson.create();
 		RStream<String, String> stream = redisson.getStream("dreStream");
 //		stream.createGroup("groupDre");
 		stream.add(StreamAddArgs.entry("DRE1", message + ":"+ usuario));
@@ -34,34 +36,34 @@ public class Redis implements Serializable {
 			@Override
 			public void run() {
 				
-				RedissonClient redisson = Redisson.create();
 				RStream<String, String> stream = redisson.getStream("dreStream");
 				
 				Map<StreamMessageId, Map<String, String>> messages = stream.readGroup("groupDre","consumer1",StreamReadGroupArgs.greaterThan(StreamMessageId.NEVER_DELIVERED));
 				
 	 	 		for (Map.Entry<StreamMessageId, Map<String, String>> entry : messages.entrySet()) {	 	 			 	 					 	 			
-	 	 			Map<String, String> msg = entry.getValue();
-	 	 			
-	 	 			msg.keySet().stream()
-	 	 			.findFirst().ifPresent(messasgem -> {
-	 	 				System.out.println("Consumindo mensagem da DRE" + messasgem  + " messasge: " + msg.get(messasgem));
-	 	 			});
 
 	 	 			try {
-	 	 				Thread.currentThread().sleep(20000L);
+	 	 				
+	 	 				Map<String, String> msg = entry.getValue();
+		 	 			
+		 	 			msg.keySet().stream()
+		 	 			.findFirst().ifPresent(messasgem -> {
+		 	 				System.out.println("Consumindo mensagem da DRE" + messasgem  + " messasge: " + msg.get(messasgem));
+		 	 			});
+	 	 				
+	 	 				Thread.sleep(2000);
+	 	 				
+	 	 				System.out.println("terminou de processar mensagem: "+ msg);
+		 	 			stream.ack("groupDre", entry.getKey());
+		 	 			stream.remove(entry.getKey());
+	 	 				
 	 				} catch (InterruptedException e) {
-	 					// TODO Auto-generated catch block
 	 					e.printStackTrace();
-	 				}
-	 	 		  
-	 	 			System.out.println("terminou de processar mensagem: "+ msg);
-	 	 			stream.ack("groupDre", entry.getKey());
-	 	 			stream.remove(entry.getKey());
-	 	 		}
-	 	 		redisson.shutdown();
-				
+	 				} catch (Exception e) {
+						e.printStackTrace();
+					}
+	 	 		}				
 			}
 		}).start();
-		redisson.shutdown();
 	}
 }
