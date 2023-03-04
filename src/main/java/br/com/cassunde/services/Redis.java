@@ -46,10 +46,7 @@ public class Redis implements Serializable {
 	 	 				
 	 	 				Map<String, String> msg = entry.getValue();
 		 	 			
-		 	 			msg.keySet().stream()
-		 	 			.findFirst().ifPresent(messasgem -> {
-		 	 				System.out.println("Consumindo mensagem da DRE" + messasgem  + " messasge: " + msg.get(messasgem));
-		 	 			});
+	 	 				System.out.println("Consumindo mensagem " + msg);
 	 	 				
 	 	 				Thread.sleep(2000);
 	 	 				
