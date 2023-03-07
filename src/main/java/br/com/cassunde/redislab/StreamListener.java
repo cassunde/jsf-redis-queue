@@ -1,35 +1,22 @@
-package br.com.cassunde.listener;
+package br.com.cassunde.redislab;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-
+import org.redisson.Redisson;
 import org.redisson.api.RStream;
 import org.redisson.api.RedissonClient;
 import org.redisson.api.StreamMessageId;
 import org.redisson.api.stream.StreamReadGroupArgs;
 
-@Named
-public class DreStreamListener {
+public class StreamListener {
 
-	@Inject
-	private RedissonClient redisson;
-	
-	public String getPattern() {
-		return "__keyspace@0__:dreStream";
-	}
+	public static void main(String[] args) {
 
-	public Class<?> getType() {
-		return String.class;
-	}
-
-	public void onMessage(CharSequence channel, String msg) {
+		RedissonClient redisson = Redisson.create();
 		RStream<String, String> stream = redisson.getStream("dreStream");
+		Map<StreamMessageId, Map<String, String>> group = stream.readGroup("groupDre", "consumer1", StreamReadGroupArgs.neverDelivered());
 		
-		Map<StreamMessageId, Map<String, String>> messages = stream.readGroup("groupDre","consumer1",StreamReadGroupArgs.greaterThan(StreamMessageId.NEVER_DELIVERED));
-										
-		for (Map.Entry<StreamMessageId, Map<String, String>> entry : messages.entrySet()) {	 	 			 	 					 	 			
+		for (Map.Entry<StreamMessageId, Map<String, String>> entry : group.entrySet()) {	 	 			 	 					 	 			
 
  			try {
  				
@@ -47,4 +34,5 @@ public class DreStreamListener {
 		}	
 		
 	}
+
 }
