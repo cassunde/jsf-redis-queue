@@ -12,8 +12,6 @@ import org.redisson.api.RedissonClient;
 @ApplicationScoped
 public class RedisConnection {
 
-	
-	
 	@Produces
 	public RedissonClient createConnection() {
 		System.out.println("abriu conexao");
@@ -22,7 +20,6 @@ public class RedisConnection {
 
 	public void finaliza(@Disposes RedissonClient client) { 
 		client.shutdown();
-
 		System.out.println("fechou conexao");
 	} 
 }
