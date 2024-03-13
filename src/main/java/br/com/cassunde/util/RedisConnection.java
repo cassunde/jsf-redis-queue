@@ -21,5 +21,5 @@ public class RedisConnection {
 	public void finaliza(@Disposes RedissonClient client) { 
 		client.shutdown();
 		System.out.println("fechou conexao");
-	}
+	} 
 }

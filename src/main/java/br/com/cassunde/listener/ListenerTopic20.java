@@ -1,6 +1,5 @@
 package br.com.cassunde.listener;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.redisson.api.RedissonClient;
@@ -10,8 +9,6 @@ import br.com.cassunde.bean.model.Product;
 @Named
 public class ListenerTopic20 implements ListenerDefault<Product> {
 
-	@Inject
-	private RedissonClient redisson;
 
 	@Override
 	public void onMessage(CharSequence channel, Product msg) {
@@ -22,7 +19,7 @@ public class ListenerTopic20 implements ListenerDefault<Product> {
 	}
 	
 	@Override
-	public void register() {
+	public void register(RedissonClient redisson) {
 		redisson.getTopic("topic20").addListener(Product.class, this);
 	}
 }

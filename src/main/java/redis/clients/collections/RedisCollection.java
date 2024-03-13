@@ -8,9 +8,9 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
-import redis.clients.jedis.Jedis;
-
 import com.google.gson.Gson;
+
+import redis.clients.jedis.Jedis;
 
 abstract class RedisCollection<T> implements Collection<T>{
 

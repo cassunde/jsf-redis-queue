@@ -8,9 +8,9 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import redis.clients.jedis.Jedis;
-
 import com.google.gson.Gson;
+
+import redis.clients.jedis.Jedis;
 
 public class RedisMap<T> implements Map<String, T> {
 
