@@ -20,15 +20,32 @@ public class PDF {
 	public static void main(String[] args) throws IOException, DocumentException {
 		
 		
-		List<Author> authors = new ArrayList<>();
+		List<Item> itens = new ArrayList<>();
 		
 		
-		for(int i= 0; i<= 1000; i++) {
-			authors.add(new Author("Autor "+i, "Alguma coisa "));
+		//Criar primeiro nivel de rubrica
+		for(int i = 0; i <= 10; i++ ) {
+			
+			Item rubrica = new Item("Rubrica "+i);
+			
+			for(int irub = 0; irub <= 10; irub++ ) {
+				
+				Item rubricaSegundoNivel = new Item("Rubrica "+i+"."+irub);
+				rubrica.addItens(rubricaSegundoNivel);
+				
+				for(int irub3 = 0; irub3 <= 2; irub3++ ) {
+					
+					Item rubricaTerceiroNivel = new Item("Rubrica "+i+"."+irub+"."+irub3);
+					rubricaSegundoNivel.addItens(rubricaTerceiroNivel);
+				}
+			}
+			
+			itens.add(rubrica);
 		}
 		
 		
 		ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+		templateResolver.setPrefix("templates/");
 	    templateResolver.setSuffix(".html");
 	    templateResolver.setTemplateMode(TemplateMode.HTML);
 
@@ -36,11 +53,11 @@ public class PDF {
 	    templateEngine.setTemplateResolver(templateResolver);
 
 	    Context context = new Context();
-	    context.setVariable("to", "Juremas 4");
-	    context.setVariable("books", authors);
+	    context.setVariable("to", "Thiago da Silva");
+	    context.setVariable("rubs", itens);
 	    
 
-	     String process = templateEngine.process("Layout", context);
+	     String process = templateEngine.process("report1", context);
 
 	     String outputFolder = System.getProperty("user.home") + File.separator + "thymeleaf.pdf";
 	     OutputStream outputStream = new FileOutputStream(outputFolder);

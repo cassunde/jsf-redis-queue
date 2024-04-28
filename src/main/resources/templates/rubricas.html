@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<table>
+		<tr th:if="${rubs.empty}">
+           	
+        </tr>
+		<tr th:each="rub : ${rubs}">
+		    <td th:text="${rub.rubrica}" />
+		    <td th:insert="rubricas" th:with="rubs=${rub.itens}"></td>
+		</tr>
+	</table>
+</html>

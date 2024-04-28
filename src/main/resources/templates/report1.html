@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<style>
+			table, td, th {
+			  border: 1px solid;
+			}
+			
+			table {
+			  width: 100%;
+			  border-collapse: collapse;
+			}
+			@page { size: A4 landscape;}
+			footer{
+			  background: #f7f7f7;
+			    padding: 3rem;
+			  /* padding-top: 5rem; */
+			  padding-top: 7rem;
+			    padding-bottom: 80px;
+			  background-image: url(https://arena.km.ua/wp-content/uploads/3538533.jpg);
+			}
+		</style>
+	</head>	
+  	<body>
+    	<h3 style="text-align: center; color: red">
+      		<span th:text="'Relatório DRE 222 -  Usuário: ' + ${to}"></span>
+    	</h3>    	
+	    Planner Sistemas - Teste
+		<!-- <table>
+		    <thead>
+		        <tr>
+		            <th> Rubrica </th>
+		        </tr>
+		    </thead>
+		    <tbody>
+				<tr th:if="${rubs.empty}">
+	            	<td colspan="2"> Sem dados </td>
+		        </tr>
+		        <tr th:each="rub : ${rubs}">
+		            <td><span th:text="${rub.rubrica}"> Rubrica </span></td>
+		        </tr>
+		    </tbody>
+		</table> -->
+		<div th:replace="rubricas" th:with="rubs=${rubs}"></div>
+		<div th:replace="footer"></div>
+	  </body>
+
+</html>

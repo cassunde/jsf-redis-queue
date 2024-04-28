@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<style>
+			table, td, th {
+			  border: 1px solid;
+			}
+			
+			table {
+			  width: 100%;
+			  border-collapse: collapse;
+			}
+			  /* @page { size: A4 landscape;}  */			
+		</style>
+	</head>	
+  	<body>
+    	<h3 style="text-align: center; color: green">
+      		<span th:text="'Relatório DRE 2 -  Usuário: ' + ${to}"></span>
+    	</h3>    	
+	    Planner Sistemas - Teste
+		<!-- <ul>
+			<li th:each="rub : ${rubs}" th:text="${rub.rubrica}"></li>
+		</ul> -->
+		<!-- <div th:replace="rubricas" th:with="rubs=${rubs}"></div> -->
+		<div th:replace="footer"></div>
+	  </body>
+
+</html>
